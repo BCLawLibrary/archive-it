@@ -4,8 +4,8 @@ from pyexcel_ods3 import save_data
 from pyexcel_xlsx import get_data
 
 # get_description() from GitHub user @fartoot
-# https://github.com/pytube/pytube/issues/1626
 # because pytube's .description doesn't work
+# https://github.com/pytube/pytube/issues/1626
 def get_description(url):
     yt = YouTube(url)
     for n in range(6):
@@ -22,13 +22,16 @@ def get_metadata(url):
         obj = YouTube(url)
         date = f'{obj.publish_date:%b %d, %Y}'
         title = obj.title
+        # Archive-It doesn't like newlines in desc.
+        # Preserve newlines as "\\n"
         desc = get_description(url).replace("\n", "\\n")
         creator = "Boston College Law School"
-        return url, date, title, desc, creator
+        return url, date, title, desc, creator # return tuple
     except:
         print("Video is unavailable...")
         return None
-    
+
+# Input CSV is just a column of YouTube URLs
 with open('youtube_urls.csv', 'r') as csvfile:
     urlList = []
     read = csv.reader(csvfile, delimiter=',')
